@@ -42,13 +42,14 @@ module.exports = React.createClass({
     console.log('ListTile metrics', metrics);
 
     if (metrics && metrics.length > 0) {
-      var metric = metrics[0];
-      updateData(data, metric);
+      metrics.forEach(function(metric) {
+        updateData(data, metric);
 
-      metric.points.forEach(function(point) {
-        data.items.push({
-          label: point.label,
-          value: point.value
+        metric.points.forEach(function(point) {
+          data.items.push({
+            label: point.label,
+            value: point.value
+          });
         });
       });
     }
