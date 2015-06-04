@@ -13,10 +13,18 @@ module.exports = React.createClass({
       title: {
         textAlign: 'center'
       },
-      itemLabel: {},
+      list: {
+        listStyleType: 'none',
+        paddingLeft: 0
+      },
+      itemLabel: {
+        marginLeft: '1em',
+        marginRight: '1em'
+      },
       itemValue: {
         float: 'right',
-        marginLeft: '1em'
+        marginLeft: '1em',
+        marginRight: '1em'
       }
     };
 
@@ -64,10 +72,10 @@ module.exports = React.createClass({
     var list;
 
     if (this.props.ordered) {
-      list = <ol>{items}</ol>;
+      list = <ol style={styles.list}>{items}</ol>;
     }
     else {
-      list = <ul>{items}</ul>;
+      list = <ul style={styles.list}>{items}</ul>;
     }
 
     return (
