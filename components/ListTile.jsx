@@ -59,21 +59,21 @@ module.exports = React.createClass({
         var matches = true;
 
         if (typeof band.min !== 'undefined') {
-          if (band.minInclusive) {
-            matches = (value >= band.min);
+          if (band.minExclusive) {
+            matches = (value > band.min);
           }
           else {
-            matches = (value > band.min);
+            matches = (value >= band.min);
           }
         }
 
         if (matches) {
           if (typeof band.max !== 'undefined') {
-            if (band.maxInclusive) {
-              matches = (value <= band.max);
+            if (band.maxExclusive) {
+              matches = (value < band.max);
             }
             else {
-              matches = (value < band.max);
+              matches = (value <= band.max);
             }
           }
 
