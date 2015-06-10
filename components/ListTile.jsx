@@ -1,9 +1,12 @@
 'use strict';
 
 var React = require('react');
+var objectAssign = require('object-assign');
 
 module.exports = React.createClass({
   render: function() {
+    var self = this;
+
     var styles = {
       container: {
         color: '#ffffff',
@@ -16,12 +19,17 @@ module.exports = React.createClass({
       list: {
         listStyleType: 'none',
         paddingLeft: 0
+      }
+    };
+    var itemStyles = {
+      item: {
+
       },
-      itemLabel: {
+      label: {
         marginLeft: '1em',
         marginRight: '1em'
       },
-      itemValue: {
+      value: {
         float: 'right',
         marginLeft: '1em',
         marginRight: '1em'
@@ -44,9 +52,46 @@ module.exports = React.createClass({
       data.title = useIfDefined(data.title, partialData.title);
     }
 
-    updateData(data, this.props);
+    function findBand(value) {
+      var matchingBand = null;
 
-    var metrics = this.props.metrics;
+      self.props.bands.some(function(band) {
+        var matches = true;
+
+        if (typeof band.min !== 'undefined') {
+          if (band.minInclusive) {
+            matches = (value >= band.min);
+          }
+          else {
+            matches = (value > band.min);
+          }
+        }
+
+        if (matches) {
+          if (typeof band.max !== 'undefined') {
+            if (band.maxInclusive) {
+              matches = (value <= band.max);
+            }
+            else {
+              matches = (value < band.max);
+            }
+          }
+
+          if (matches) {
+            matchingBand = band;
+            return true;
+          }
+        }
+
+        return false;
+      });
+
+      return matchingBand;
+    }
+
+    updateData(data, self.props);
+
+    var metrics = self.props.metrics;
     console.log('ListTile metrics', metrics);
 
     if (metrics && metrics.length > 0) {
@@ -66,12 +111,14 @@ module.exports = React.createClass({
     var items = [];
 
     data.items.forEach(function(item) {
-      items.push(<li><span style={styles.itemLabel}>{item.label}</span><span style={styles.itemValue}>{item.value}</span></li>);
+      var band = findBand(item.value);
+      var inheritedStyles = objectAssign({}, itemStyles, band ? band.styles : {});
+      items.push(<li style={inheritedStyles.item}><span style={inheritedStyles.label}>{item.label}</span><span style={inheritedStyles.value}>{item.value}</span></li>);
     });
 
     var list;
 
-    if (this.props.ordered) {
+    if (self.props.ordered) {
       list = <ol style={styles.list}>{items}</ol>;
     }
     else {
