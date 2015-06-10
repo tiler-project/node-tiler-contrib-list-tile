@@ -1,6 +1,6 @@
 {
   "name": "tiler-contrib-list-tile",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "ListTile for the tiler framework",
   "keywords": [
     "dashboard",
