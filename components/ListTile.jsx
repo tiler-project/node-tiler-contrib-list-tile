@@ -56,36 +56,38 @@ module.exports = React.createClass({
     function findBand(value) {
       var matchingBand = null;
 
-      self.props.bands.some(function(band) {
-        var matches = true;
+      if (typeof self.props.bands !== 'undefined') {
+        self.props.bands.some(function(band) {
+          var matches = true;
 
-        if (typeof band.min !== 'undefined') {
-          if (band.minExclusive) {
-            matches = (value > band.min);
-          }
-          else {
-            matches = (value >= band.min);
-          }
-        }
-
-        if (matches) {
-          if (typeof band.max !== 'undefined') {
-            if (band.maxExclusive) {
-              matches = (value < band.max);
+          if (typeof band.min !== 'undefined') {
+            if (band.minExclusive) {
+              matches = (value > band.min);
             }
             else {
-              matches = (value <= band.max);
+              matches = (value >= band.min);
             }
           }
 
           if (matches) {
-            matchingBand = band;
-            return true;
-          }
-        }
+            if (typeof band.max !== 'undefined') {
+              if (band.maxExclusive) {
+                matches = (value < band.max);
+              }
+              else {
+                matches = (value <= band.max);
+              }
+            }
 
-        return false;
-      });
+            if (matches) {
+              matchingBand = band;
+              return true;
+            }
+          }
+
+          return false;
+        });
+      }
 
       return matchingBand;
     }
