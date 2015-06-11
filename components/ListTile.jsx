@@ -11,7 +11,8 @@ module.exports = React.createClass({
       container: {
         color: '#ffffff',
         backgroundColor: '#1e1e1e',
-        height: '100%'
+        height: '100%',
+        overflowY: 'hidden'
       },
       title: {
         textAlign: 'center'
